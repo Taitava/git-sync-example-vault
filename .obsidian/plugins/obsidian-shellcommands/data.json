@@ -1,6 +1,6 @@
 {
   "settings_version": "0.22.0",
-  "debug": true,
+  "debug": false,
   "obsidian_command_palette_prefix": "Execute: ",
   "preview_variables_in_command_palette": true,
   "show_autocomplete_menu": true,
