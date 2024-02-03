@@ -1,1 +1,1 @@
-Nice!
+Nice! No more \ in commits.
