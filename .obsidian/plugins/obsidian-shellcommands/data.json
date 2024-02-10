@@ -28,7 +28,7 @@
     {
       "id": "cqb71l3jne",
       "platform_specific_commands": {
-        "default": "# This shell command would need a variable that could tell, which kind of event was triggered (file modification, creation, deletion or something else). As there is currently no such variable, deciding on a commit message is not as accurate as it could be.\nif [ {{event_file_path:relative}} = {{file_path:relative}} ]\nthen\n    # The modified file is the currently focused file.\n    git reset # Don't commit any other changes.\n    if [ {{caret_paragraph}} != \"\" ]\n    then\n        git add {{event_file_path:relative}} && git commit -m {{file_name}}\": Edited line \"{{caret_position:line}}\":\" -m {{caret_paragraph}} -m \"Automatic commit.\" && git push\n    else\n        git add {{event_file_path:relative}} && git commit -m {{file_name}}\": Edited line \"{{caret_position:line}}\".\" -m \"Automatic commit.\" && git push\n    fi\nelse\n    # The modified file is some other file.\n    git add --all && git commit -m \"Automatic commit.\" && git push\nfi"
+        "default": "case {{event_type}} in\n\"file-content-modified\")\n    if [ {{event_file_path:relative}} = {{file_path:relative}} ]\n    then\n        # The modified file is the currently focused file.\n        git reset # Don't commit any other changes.\n        if [ {{caret_paragraph}} != \"\" ]\n        then\n            git add {{event_file_path:relative}} && git commit -m {{file_name}}\": Edited line \"{{caret_position:line}}\":\" -m {{caret_paragraph}} -m \"Automatic commit.\" && git push\n        else\n            git add {{event_file_path:relative}} && git commit -m {{file_name}}\": Edited line \"{{caret_position:line}}\".\" -m \"Auto-commit.\" && git push\n        fi\n     else\n         # The modified file is some other file.\n        git add --all && git commit -m \"Auto-committing file content modifications.\" && git push\n    fi\n    ;;\n\"file-created\")\n    git add --all && git commit -m \"Auto-committing new file creation(s).\" && git push\n    ;;\n\"file-deleted\")\n    git add --all && git commit -m \"Auto-committing file deletion(s).\" && git push\n    ;;\n\"file-moved\")\n    git add --all && git commit -m \"Auto-committing file moving(s).\" && git push\n    ;;\n\"file-renamed\")\n    git add --all && git commit -m \"Auto-committing file renaming(s).\" && git push\n    ;;\nesac"
       },
       "shells": {},
       "alias": "Git commit & push",
@@ -76,8 +76,9 @@
         }
       },
       "debounce": {
-        "mode": "late-execution",
-        "cooldown": 20
+        "cooldown": 20,
+        "executeEarly": false,
+        "executeLate": true
       },
       "command_palette_availability": "enabled",
       "preactions": [],
