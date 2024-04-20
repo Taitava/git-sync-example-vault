@@ -1,0 +1,165 @@
+{
+  "settings_version": "0.22.0",
+  "debug": false,
+  "obsidian_command_palette_prefix": "Execute: ",
+  "preview_variables_in_command_palette": true,
+  "show_autocomplete_menu": true,
+  "working_directory": "",
+  "default_shells": {
+    "win32": "k73ibys6zs"
+  },
+  "environment_variable_path_augmentations": {},
+  "show_installation_warnings": true,
+  "error_message_duration": 20,
+  "notification_message_duration": 10,
+  "execution_notification_mode": "disabled",
+  "output_channel_clipboard_also_outputs_to_notification": true,
+  "output_channel_notification_decorates_output": true,
+  "enable_events": true,
+  "approve_modals_by_pressing_enter_key": true,
+  "command_palette": {
+    "re_execute_last_shell_command": {
+      "enabled": true,
+      "prefix": "Re-execute: "
+    }
+  },
+  "max_visible_lines_in_shell_command_fields": false,
+  "shell_commands": [
+    {
+      "id": "cqb71l3jne",
+      "platform_specific_commands": {
+        "default": "case {{event_type}} in\n\"file-content-modified\")\n    if [ {{event_file_path:relative}} = {{file_path:relative}} ]\n    then\n        # The modified file is the currently focused file.\n        git reset # Don't commit any other changes.\n        if [ {{caret_paragraph}} != \"\" ]\n        then\n            git add {{event_file_path:relative}} && git commit -m {{file_name}}\": Edited line \"{{caret_position:line}}\":\" -m {{caret_paragraph}} -m \"Automatic commit.\" && git push\n        else\n            git add {{event_file_path:relative}} && git commit -m {{file_name}}\": Edited line \"{{caret_position:line}}\".\" -m \"Auto-commit.\" && git push\n        fi\n     else\n         # The modified file is some other file.\n        git add --all && git commit -m \"Auto-committing file content modifications.\" && git push\n    fi\n    ;;\n\"file-created\")\n    git add --all && git commit -m \"Auto-committing new file creation(s).\" && git push\n    ;;\n\"file-deleted\")\n    git add --all && git commit -m \"Auto-committing file deletion(s).\" && git push\n    ;;\n\"file-moved\")\n    git add --all && git commit -m \"Auto-committing file moving(s).\" && git push\n    ;;\n\"file-renamed\")\n    git add --all && git commit -m \"Auto-committing file renaming(s).\" && git push\n    ;;\nesac"
+      },
+      "shells": {},
+      "alias": "Git commit & push",
+      "icon": "git-commit",
+      "confirm_execution": false,
+      "ignore_error_codes": [],
+      "input_contents": {
+        "stdin": null
+      },
+      "output_handlers": {
+        "stdout": {
+          "handler": "ignore",
+          "convert_ansi_code": true
+        },
+        "stderr": {
+          "handler": "notification",
+          "convert_ansi_code": true
+        }
+      },
+      "output_wrappers": {
+        "stdout": null,
+        "stderr": null
+      },
+      "output_channel_order": "stdout-first",
+      "output_handling_mode": "buffered",
+      "execution_notification_mode": "permanent",
+      "events": {
+        "file-content-modified": {
+          "enabled": true
+        },
+        "on-quit": {
+          "enabled": true
+        },
+        "file-renamed": {
+          "enabled": true
+        },
+        "file-moved": {
+          "enabled": true
+        },
+        "file-deleted": {
+          "enabled": true
+        },
+        "file-created": {
+          "enabled": true
+        }
+      },
+      "debounce": {
+        "executeEarly": false,
+        "executeLate": true,
+        "cooldownDuration": 20,
+        "prolongCooldown": true
+      },
+      "command_palette_availability": "enabled",
+      "preactions": [],
+      "variable_default_values": {}
+    },
+    {
+      "id": "nmowtgwmbl",
+      "platform_specific_commands": {
+        "default": "git pull"
+      },
+      "shells": {},
+      "alias": "Git pull",
+      "icon": "git-fork",
+      "confirm_execution": false,
+      "ignore_error_codes": [],
+      "input_contents": {
+        "stdin": null
+      },
+      "output_handlers": {
+        "stdout": {
+          "handler": "notification",
+          "convert_ansi_code": true
+        },
+        "stderr": {
+          "handler": "notification",
+          "convert_ansi_code": true
+        }
+      },
+      "output_wrappers": {
+        "stdout": null,
+        "stderr": null
+      },
+      "output_channel_order": "stdout-first",
+      "output_handling_mode": "realtime",
+      "execution_notification_mode": null,
+      "events": {
+        "on-layout-ready": {
+          "enabled": true
+        },
+        "every-n-seconds": {
+          "enabled": true,
+          "seconds": 60
+        }
+      },
+      "debounce": null,
+      "command_palette_availability": "enabled",
+      "preactions": [],
+      "variable_default_values": {}
+    }
+  ],
+  "prompts": [],
+  "builtin_variables": {},
+  "custom_variables": [],
+  "custom_variables_notify_changes_via": {
+    "obsidian_uri": true,
+    "output_assignment": true
+  },
+  "custom_shells": [
+    {
+      "id": "k73ibys6zs",
+      "name": "Windows Subsystem for Linux (WSL)",
+      "description": "\"WSL is a feature of Windows that allows developers to run a Linux environment without the need for a separate virtual machine or dual booting.\" (from: https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux)\n\nThis custom shell configuration allows you to execute Linux/Bash commands from Obsidian on Windows.\n\nInstall WSL: https://learn.microsoft.com/en-us/windows/wsl/install",
+      "binary_path": "C:\\Windows\\System32\\wsl.exe",
+      "shell_arguments": [
+        "--shell-type login",
+        "--",
+        "{{!shell_command_content}}"
+      ],
+      "host_platform": "win32",
+      "host_platform_configurations": {
+        "win32": {
+          "quote_shell_arguments": false
+        }
+      },
+      "shell_platform": "linux",
+      "escaper": "UnixShell",
+      "path_translator": "const pathParts = absolutePath.match(/^([a-z]):\\/(.+)$/ui);\nconst driveLetter = pathParts[1];\nconst trailingPath = pathParts[2];\nreturn '/mnt/' + driveLetter.toLocaleLowerCase() + '/' + trailingPath;",
+      "shell_command_wrapper": null,
+      "shell_command_test": "echo \"Hello $USER, current working directory is: $(pwd)\""
+    }
+  ],
+  "output_wrappers": []
+}

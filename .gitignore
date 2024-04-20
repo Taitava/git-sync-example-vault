@@ -1,0 +1,9 @@
+# Ignore all Obsidian's settings files:
+/.obsidian/*
+
+# But include the Shell commands plugin's settings file (data.json):
+!/.obsidian/plugins/
+/.obsidian/plugins/*
+!/.obsidian/plugins/obsidian-shellcommands/
+/.obsidian/plugins/obsidian-shellcommands/*
+!/.obsidian/plugins/obsidian-shellcommands/data.json
