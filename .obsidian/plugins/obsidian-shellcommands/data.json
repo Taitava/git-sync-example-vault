@@ -15,7 +15,7 @@
   "execution_notification_mode": "disabled",
   "output_channel_clipboard_also_outputs_to_notification": true,
   "output_channel_notification_decorates_output": true,
-  "enable_events": true,
+  "enable_events": false,
   "approve_modals_by_pressing_enter_key": true,
   "command_palette": {
     "re_execute_last_shell_command": {
